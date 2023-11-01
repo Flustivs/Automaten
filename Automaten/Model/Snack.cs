@@ -16,7 +16,7 @@ namespace Automaten.Model
 
 		internal List<string> WhichChocolate()
 		{
-			string ChocolateReader = "SELECT chocolateName FROM Chocolate";
+			string ChocolateReader = "SELECT chocolateName FROM Chocolate ORDER BY chocolateID";
 			_chocolate = readDB.GetDBInfo(ChocolateReader);
 			return _chocolate;
 		}
@@ -28,7 +28,7 @@ namespace Automaten.Model
 		}
 		internal List<string> WhichChipBag()
 		{
-			string ChipBagreader = "SELECT chipBagName FROM ChipBag";
+			string ChipBagreader = "SELECT chipBagName FROM ChipBag ORDER BY chipBagID";
 			_chipBag = readDB.GetDBInfo(ChipBagreader);
 			return _chipBag;	
 		}

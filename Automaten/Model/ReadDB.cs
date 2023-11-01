@@ -21,7 +21,9 @@ namespace Automaten.Model
 					{
 						while (reader.Read())
 						{
-							Information.Add(reader.GetString(0).ToString());
+							object value = reader.GetValue(0);
+							string stringvalue = value is int intValue ? intValue.ToString() : value.ToString();
+							Information.Add(stringvalue);
 						}
 					}
 				}

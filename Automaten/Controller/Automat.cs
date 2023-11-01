@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -15,16 +16,17 @@ namespace Automaten.Controller
 		Model.Snack snackPriceClass = new Model.Snack();
 		Model.Snack snackNameClass = new Model.Snack();
 		Model.ReadDB readDB = new Model.ReadDB();
-		Controller.ChipBagController chipBagController = new Controller.ChipBagController();
-		Controller.ChocolateController chocolateController = new Controller.ChocolateController();
-		Controller.CoffeeController coffeeController = new Controller.CoffeeController();
-		Controller.SodaController sodaController = new Controller.SodaController();
+		ChipBagController chipBagController = new ChipBagController();
+		ChocolateController chocolateController = new ChocolateController();
+		CoffeeController coffeeController = new CoffeeController();
+		SodaController sodaController = new SodaController();
 
 
 
 		internal void VendingMachine()
 		{
 			string product = "";
+			bool newStock = false;
 			bool vending = true;
 			bool eight = false;
 			bool seven = false;
@@ -44,18 +46,38 @@ namespace Automaten.Controller
 									{
 										ConsoleKeyInfo sodaKey = menu.SodaMenu(drinkNameClass.WhichSoda(), drinkPriceClass.SodaPrice());
 										product = sodaController.PickSoda(sodaKey);
+										if (product == " ")
+										{
+											break;
+										}
 										List<string> listPrice = readDB.GetDBInfo($"SELECT sodaPrice FROM Soda WHERE sodaName = '{product}'");
 										float price = float.Parse(listPrice[0]);
-										menu.BuyMenu(product, price);
+										newStock = menu.BuyMenu(product, price);
+										if (newStock)
+										{
+											List<string> sodaID = readDB.GetDBInfo($"SELECT sodaID FROM Soda WHERE sodaName = '{product}'");
+											string productID = sodaID[0];
+											readDB.GetDBInfo($"UPDATE sodaStorage SET productAmount = productAmount - 1 WHERE sodaID = {productID}");
+										}
 										break;
 									}
 								case ConsoleKey.D2:
 									{
 										ConsoleKeyInfo coffeeKey = menu.CoffeeMenu(drinkNameClass.WhichCoffee(), drinkPriceClass.CoffeePrice());
 										product = coffeeController.PickCoffee(coffeeKey);
+										if (product == " ")
+										{
+											break;
+										}
 										List<string> listPrice = readDB.GetDBInfo($"SELECT coffeePrice FROM Coffee WHERE coffeeName = '{product}'");
 										float price = float.Parse(listPrice[0]);
-										menu.BuyMenu(product, price);
+										newStock = menu.BuyMenu(product, price);
+										if (newStock)
+										{
+											List<string> sodaID = readDB.GetDBInfo($"SELECT coffeeID FROM Coffee WHERE coffeeName = '{product}'");
+											string productID = sodaID[0];
+											readDB.GetDBInfo($"UPDATE coffeeStorage SET productAmount = productAmount - 1 WHERE coffeeID = {productID}");
+										}
 										break;
 									}
 							}
@@ -72,18 +94,38 @@ namespace Automaten.Controller
 									{
 										ConsoleKeyInfo chocolateKey = menu.ChocolateMenu(snackNameClass.WhichChocolate(), snackPriceClass.ChocolatePrice());
 										product = chocolateController.PickChocolate(chocolateKey);
+										if (product == " ")
+										{
+											break;
+										}
 										List<string> listPrice = readDB.GetDBInfo($"SELECT chocolatePrice FROM Chocolate WHERE chocolateName = '{product}'");
 										float price = float.Parse(listPrice[0]);
-										menu.BuyMenu(product, price);
+										newStock = menu.BuyMenu(product, price);
+										if (newStock)
+										{
+											List<string> sodaID = readDB.GetDBInfo($"SELECT chocolateID FROM Chocolate WHERE chocolateName = '{product}'");
+											string productID = sodaID[0];
+											readDB.GetDBInfo($"UPDATE chocolateStorage SET productAmount = productAmount - 1 WHERE chocolateID = {productID}");
+										}
 										break;
 									}
 								case ConsoleKey.D2:
 									{
 										ConsoleKeyInfo chipBagKey = menu.ChipBagMenu(snackNameClass.WhichChipBag(), snackPriceClass.ChipBagPrice());
 										product = chipBagController.PickChipBag(chipBagKey);
+										if (product == " ")
+										{
+											break;
+										}
 										List<string> listPrice = readDB.GetDBInfo($"SELECT chipBagPrice FROM ChipBag WHERE chipBagName = '{product}'");
 										float price = float.Parse(listPrice[0]);
-										menu.BuyMenu(product, price);
+										newStock = menu.BuyMenu(product, price);
+										if (newStock)
+										{
+											List<string> sodaID = readDB.GetDBInfo($"SELECT chipBagID FROM ChipBag WHERE chipBagName = '{product}'");
+											string productID = sodaID[0];
+											readDB.GetDBInfo($"UPDATE chipBagStorage SET productAmount = productAmount - 1 WHERE chipBagID = {productID}");
+										}
 										break;
 									}
 							}
@@ -110,6 +152,10 @@ namespace Automaten.Controller
 										{
 											ConsoleKeyInfo SodaKey = menu.SodaMenu(drinkNameClass.WhichSoda(), drinkPriceClass.SodaPrice());
 											product = sodaController.PickSoda(SodaKey);
+											if (product == " ")
+											{
+												break;
+											}
 											List<string> listPrice = readDB.GetDBInfo($"SELECT sodaPrice FROM Soda WHERE sodaName = '{product}'");
 											float price = float.Parse(listPrice[0]);
 											float changedPrice = menu.PriceChanger(price, product);
@@ -150,6 +196,14 @@ namespace Automaten.Controller
 											Thread.Sleep(1500);
 											break;
 										}
+									case ConsoleKey.D5:
+										{
+											readDB.GetDBInfo("UPDATE sodaStorage SET productAmount = 20");
+											readDB.GetDBInfo("UPDATE coffeeStorage SET productAmount = 20");
+											readDB.GetDBInfo("UPDATE chocolateStorage SET productAmount = 20");
+											readDB.GetDBInfo("UPDATE chipBagStorage SET productAmount = 20");
+											break;
+										}
 								}
 							}
 							break;
@@ -161,6 +215,7 @@ namespace Automaten.Controller
 							break;
 						}
 				}
+				newStock = false;
 			}
 		}
 	}

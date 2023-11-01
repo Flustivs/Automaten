@@ -9,15 +9,15 @@ namespace Automaten.View
 {
 	internal class Menu
 	{
-		private ConsoleKey[] checkKey = { ConsoleKey.D1, ConsoleKey.D2, ConsoleKey.D3, ConsoleKey.D4, ConsoleKey.D5, ConsoleKey.D6, ConsoleKey.D7, ConsoleKey.D8, ConsoleKey.D9 };
-
-		internal ConsoleKeyInfo StartMenu()
+		private ConsoleKey[] checkKey = { ConsoleKey.D0, ConsoleKey.D1, ConsoleKey.D2, ConsoleKey.D3, ConsoleKey.D4, ConsoleKey.D5, ConsoleKey.D6, ConsoleKey.D7, ConsoleKey.D8, ConsoleKey.D9 };
+        internal ConsoleKeyInfo StartMenu()
 		{
+			Console.ForegroundColor = ConsoleColor.White;
 			Console.Clear();
 			string menu = "=========================================\n" +
 						  "             Vending machine             \n" +
 						  "=========================================\n\n" +
-						  "(You need to use the keys from 1 - 3 to navigate between menus)\n\n" +
+						  "(You need to use the keys from 1 - 2 to navigate between menus)\n\n" +
 						  "1. Drinks\n" +
 						  "2. Snacks";
 			Console.WriteLine(menu);
@@ -52,10 +52,13 @@ namespace Automaten.View
 				{
 					for (int o = 0; o < 1; o++)
 					{
+						Console.ForegroundColor = (ConsoleColor)i;
 						Console.WriteLine($"{i}: {item} {price[i - 1]} DKK");
+						Console.ForegroundColor = ConsoleColor.White;
 					}
 					i++;
 				}
+				Console.WriteLine("0: Exit");
 				key = Console.ReadKey();
 				for (int o = 0; o <= 8; o++)
 				{
@@ -68,7 +71,7 @@ namespace Automaten.View
 				if (sodas)
 				{
 					Console.WriteLine("\nInvalid Input");
-					Console.ReadKey();
+					Thread.Sleep(1500);
 				}
 			}
 			return key;
@@ -89,10 +92,13 @@ namespace Automaten.View
 				{
 					for (int o = 0; o < 1; o++)
 					{
+						Console.ForegroundColor = (ConsoleColor)i;
 						Console.WriteLine($"{i}: {item} {price[i - 1]} DKK");
+						Console.ForegroundColor = ConsoleColor.White;
 					}
 					i++;
 				}
+				Console.WriteLine("0: Exit");
 				key = Console.ReadKey();
 				for (int o = 0; o <= 8; o++)
 				{
@@ -105,7 +111,7 @@ namespace Automaten.View
 				if (coffee)
 				{
 					Console.WriteLine("\nInvalid Input");
-					Console.ReadKey();
+					Thread.Sleep(1500);
 				}
 			}
 			return key;
@@ -138,11 +144,13 @@ namespace Automaten.View
 				{
 					for (int o = 0; o < 1; o++)
 					{
+						Console.ForegroundColor = (ConsoleColor)i;
 						Console.WriteLine($"{i}: {item} {price[i - 1]} DKK");
+						Console.ForegroundColor = ConsoleColor.White;
 					}
 					i++;
 				}
-				info.Clear();
+				Console.WriteLine("0: Exit");
 				key = Console.ReadKey();
 				for (int o = 0; o <= 8; o++)
 				{
@@ -155,7 +163,7 @@ namespace Automaten.View
 				if (chocolate)
 				{
 					Console.WriteLine("\nInvalid Input");
-					Console.ReadKey();
+					Thread.Sleep(1500);
 				}
 			}
 			return key;
@@ -176,11 +184,13 @@ namespace Automaten.View
 				{
 					for (int o = 0; o < 1; o++)
 					{
+						Console.ForegroundColor = (ConsoleColor)i;
 						Console.WriteLine($"{i}: {item} {price[i - 1]} DKK");
+						Console.ForegroundColor = ConsoleColor.White;
 					}
 					i++;
 				}
-				info.Clear();
+				Console.WriteLine("0: Exit");
 				key = Console.ReadKey();
 				for (int o = 0; o <= 8; o++)
 				{
@@ -193,14 +203,15 @@ namespace Automaten.View
 				if (chipBag)
 				{
 					Console.WriteLine("\nInvalid Input");
-					Console.ReadKey();
+					Thread.Sleep(1500);
 				}
 			}
 			return key;
 		}
-		internal float BuyMenu(string product, float price)
+		internal bool BuyMenu(string product, float price)
 		{
 			Console.Clear();
+			bool enoughMoney = false;
 			string menu = "=========================================\n" +
 						  "                    Buy                  \n" +
 						  "=========================================\n\n" +
@@ -210,18 +221,19 @@ namespace Automaten.View
 			try
 			{
 				transaction = float.Parse(Console.ReadLine());
-				GiveProduct(product, price, transaction);
+				enoughMoney = GiveProduct(product, price, transaction);
 
 			}
 			catch (Exception ex)
 			{
 				throw new Exception(ex.Message);
 			}
-			return transaction;
+			return enoughMoney;
 		}
-		private void GiveProduct(string product, float price, float change)
+		private bool GiveProduct(string product, float price, float change)
 		{
 			Console.Clear();
+			bool enoughMoney = false;
 			change = change - price;
 			if (change < 0)
 			{
@@ -234,8 +246,10 @@ namespace Automaten.View
 									   "=========================================\n\n" +
 									   $"Product = {product}\nPrice = {price}\n\nThis is your change {change}\n";
 				Console.WriteLine(givingProduct);
+				enoughMoney = true;
 				Thread.Sleep(3000);
 			}
+			return enoughMoney;
 		}
 		private void IncorrectAmount(float transaction)
 		{
@@ -255,7 +269,8 @@ namespace Automaten.View
 							   "1. Sodas\n" +
 							   "2. Coffee\n" +
 							   "3. Chocolate\n" +
-							   "4. ChipBag";
+							   "4. ChipBag\n" +
+							   "5. Restock All";
 			Console.WriteLine(adminMenu);
 			ConsoleKeyInfo key = Console.ReadKey();
 			return key;

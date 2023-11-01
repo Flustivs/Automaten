@@ -12,7 +12,7 @@ namespace Automaten.Model
 		private ReadDB readDB = new ReadDB();
 		internal List<string> WhichSoda()
 		{
-			string SodaReader = "SELECT sodaName FROM Soda";
+			string SodaReader = "SELECT sodaName FROM Soda ORDER BY sodaID";
 			_soda = readDB.GetDBInfo(SodaReader);
 			return _soda;
 		}
@@ -24,7 +24,7 @@ namespace Automaten.Model
 		}
 		internal List<string> WhichCoffee()
 		{
-			string CoffeeReader = "SELECT coffeeName FROM Coffee";
+			string CoffeeReader = "SELECT coffeeName FROM Coffee ORDER BY coffeeID";
 			 _coffee = readDB.GetDBInfo(CoffeeReader);
 			return _coffee;
 		}
