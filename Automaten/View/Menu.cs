@@ -284,6 +284,7 @@ namespace Automaten.View
 								 "=========================================\n\n" +
 								 $"The current price of {product} is {price}?";
 			Console.WriteLine(priceChangerPage);
+
 			try
 			{
 				wantedPrice = float.Parse(Console.ReadLine());

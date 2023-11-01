@@ -148,7 +148,7 @@ namespace Automaten.Controller
 								ConsoleKeyInfo Adminkey = menu.AdminPage();
 								switch (Adminkey.Key)
 								{
-									case ConsoleKey.D1:
+									case ConsoleKey.D1 or ConsoleKey.NumPad1:
 										{
 											ConsoleKeyInfo SodaKey = menu.SodaMenu(drinkNameClass.WhichSoda(), drinkPriceClass.SodaPrice());
 											product = sodaController.PickSoda(SodaKey);
@@ -163,7 +163,7 @@ namespace Automaten.Controller
 											Thread.Sleep(1500);
 											break;
 										}
-									case ConsoleKey.D2:
+									case ConsoleKey.D2 or ConsoleKey.NumPad2:
 										{
 											ConsoleKeyInfo CoffeeKey = menu.CoffeeMenu(drinkNameClass.WhichCoffee(), drinkPriceClass.CoffeePrice());
 											product = coffeeController.PickCoffee(CoffeeKey);
@@ -174,7 +174,7 @@ namespace Automaten.Controller
 											Thread.Sleep(1500);
 											break;
 										}
-									case ConsoleKey.D3:
+									case ConsoleKey.D3 or ConsoleKey.NumPad3:
 										{
 											ConsoleKeyInfo ChocolateKey = menu.ChocolateMenu(snackNameClass.WhichChocolate(), snackPriceClass.ChocolatePrice());
 											product = chocolateController.PickChocolate(ChocolateKey);
@@ -185,7 +185,7 @@ namespace Automaten.Controller
 											Thread.Sleep(1500);
 											break;
 										}
-									case ConsoleKey.D4:
+									case ConsoleKey.D4 or ConsoleKey.NumPad4:
 										{
 											ConsoleKeyInfo ChipBagKey = menu.ChipBagMenu(snackNameClass.WhichChipBag(), snackPriceClass.ChipBagPrice());
 											product = chipBagController.PickChipBag(ChipBagKey);
@@ -196,12 +196,13 @@ namespace Automaten.Controller
 											Thread.Sleep(1500);
 											break;
 										}
-									case ConsoleKey.D5:
+									case ConsoleKey.D5 or ConsoleKey.NumPad5:
 										{
 											readDB.GetDBInfo("UPDATE sodaStorage SET productAmount = 20");
 											readDB.GetDBInfo("UPDATE coffeeStorage SET productAmount = 20");
 											readDB.GetDBInfo("UPDATE chocolateStorage SET productAmount = 20");
 											readDB.GetDBInfo("UPDATE chipBagStorage SET productAmount = 20");
+											Thread.Sleep(1500);
 											break;
 										}
 								}
@@ -210,8 +211,8 @@ namespace Automaten.Controller
 						}
 					default:
 						{
-							eight = false;
 							seven = false;
+							eight = false;
 							break;
 						}
 				}
